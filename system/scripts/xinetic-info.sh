@@ -13,7 +13,7 @@ echo "================================"
 echo
 echo "System:"
 if [ -f /etc/os-release ]; then
-    . /etc/os-release
+    PRETTY_NAME=$(. /etc/os-release && printf '%s' "$PRETTY_NAME")
     echo "OS: $PRETTY_NAME"
 fi
 
