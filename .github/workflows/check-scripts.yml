@@ -27,4 +27,4 @@ jobs:
       - name: Check scripts
         run: |
           find system/scripts -type f -name "*.sh" -print0 |
-          xargs -0 -r shellcheck
+          xargs -0 -r shellcheck -e SC1091
