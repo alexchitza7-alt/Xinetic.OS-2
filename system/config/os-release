@@ -1,0 +1,8 @@
+NAME="Xinetic.OS"
+PRETTY_NAME="Xinetic.OS 2.0"
+ID=xinetic
+ID_LIKE=debian
+VERSION="2.0 Experimental"
+VERSION_ID="2.0"
+HOME_URL="https://github.com/alexchitza7-alt/Xinetic.OS-2"
+DOCUMENTATION_URL="https://github.com/alexchitza7-alt/Xinetic.OS-2"
