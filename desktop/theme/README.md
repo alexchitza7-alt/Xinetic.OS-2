@@ -6,8 +6,8 @@ The visual theme for Xinetic.OS 2.0.
 
 - Graphite: #101419
 - Charcoal: #191F26
-- Electric Cyan: #00DCFF
-- Silver: #E1E8EE
+- White: #FFFFFF
+- Silver: #C8D0D8
 
 ## Components
 
@@ -16,7 +16,11 @@ The visual theme for Xinetic.OS 2.0.
 - Window decoration styling
 - Application styling
 
+## Design Direction
+
+A clean, modern interface using dark graphite surfaces, white details, and silver highlights.
+
 ## Status
 
-Initial colour scheme created.
-Further KDE integration is planned.
+Initial KDE colour scheme created.
+Further KDE Plasma integration is planned.
