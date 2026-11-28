@@ -1,3 +1,4 @@
+
 import { useState } from "react";
 import {
   Search,
@@ -9,6 +10,8 @@ import {
   Download,
   Monitor,
   Sparkles,
+  CheckCircle2,
+  Trash2,
 } from "lucide-react";
 
 const apps = [
@@ -20,23 +23,53 @@ const apps = [
   { name: "System Monitor", category: "Utilities", description: "View system activity.", icon: Wrench },
 ];
 
-const categories = ["All", "Internet", "Games", "Development", "Graphics", "Office", "Utilities"];
+const categories = [
+  "All",
+  "Internet",
+  "Games",
+  "Development",
+  "Graphics",
+  "Office",
+  "Utilities",
+];
 
 export default function App() {
   const [search, setSearch] = useState("");
   const [category, setCategory] = useState("All");
+  const [page, setPage] = useState("Discover");
+  const [installedApps, setInstalledApps] = useState<string[]>([]);
 
-  const filteredApps = apps.filter((app) => {
+  const visibleApps = apps.filter((app) => {
     const matchesSearch = app.name.toLowerCase().includes(search.toLowerCase());
-    const matchesCategory = category === "All" || app.category === category;
-    return matchesSearch && matchesCategory;
+    const matchesCategory =
+      page === "Installed" ||
+      category === "All" ||
+      app.category === category;
+    const matchesPage =
+      page === "Discover" || installedApps.includes(app.name);
+
+    return matchesSearch && matchesCategory && matchesPage;
   });
+
+  function addApp(name: string) {
+    setInstalledApps((current) =>
+      current.includes(name) ? current : [...current, name]
+    );
+  }
+
+  function removeApp(name: string) {
+    setInstalledApps((current) =>
+      current.filter((app) => app !== name)
+    );
+  }
 
   return (
     <div className="app-shell">
       <aside className="sidebar">
         <div className="brand">
-          <div className="brand-icon"><Sparkles size={24} /></div>
+          <div className="brand-icon">
+            <Sparkles size={24} />
+          </div>
           <div>
             <h2>XINETIC</h2>
             <span>SOFTWARE CENTRE</span>
@@ -44,8 +77,28 @@ export default function App() {
         </div>
 
         <p className="side-label">LIBRARY</p>
-        <button className="nav-item active"><Monitor size={18} /> Discover</button>
-        <button className="nav-item"><Download size={18} /> Installed</button>
+
+        <button
+          className={page === "Discover" ? "nav-item active" : "nav-item"}
+          onClick={() => {
+            setPage("Discover");
+            setSearch("");
+            setCategory("All");
+          }}
+        >
+          <Monitor size={18} /> Discover
+        </button>
+
+        <button
+          className={page === "Installed" ? "nav-item active" : "nav-item"}
+          onClick={() => {
+            setPage("Installed");
+            setSearch("");
+            setCategory("All");
+          }}
+        >
+          <Download size={18} /> Installed
+        </button>
 
         <div className="sidebar-footer">
           <span className="status-dot" />
@@ -56,14 +109,36 @@ export default function App() {
 
       <main className="main-content">
         <header className="topbar">
-          <span>APPLICATION CENTRE / DISCOVER</span>
+          <span>APPLICATION CENTRE / {page.toUpperCase()}</span>
           <div className="version">V2.0 EXPERIMENTAL</div>
         </header>
 
         <section className="welcome">
-          <span className="eyebrow"><Sparkles size={14} /> YOUR APPLICATION HUB</span>
-          <h1>Discover something<br /><span>extraordinary.</span></h1>
-          <p>Explore applications for your Xinetic experience.</p>
+          <span className="eyebrow">
+            <Sparkles size={14} /> YOUR APPLICATION HUB
+          </span>
+
+          <h1>
+            {page === "Discover" ? (
+              <>
+                Discover something
+                <br />
+                <span>extraordinary.</span>
+              </>
+            ) : (
+              <>
+                Your applications.
+                <br />
+                <span>Ready when you are.</span>
+              </>
+            )}
+          </h1>
+
+          <p>
+            {page === "Discover"
+              ? "Explore applications for your Xinetic experience."
+              : "Manage your saved applications."}
+          </p>
 
           <div className="search-box">
             <Search size={20} />
@@ -79,49 +154,95 @@ export default function App() {
         <section className="library">
           <div className="section-heading">
             <div>
-              <span className="eyebrow">EXPLORE THE LIBRARY</span>
-              <h2>Applications</h2>
+              <span className="eyebrow">
+                {page === "Discover" ? "EXPLORE THE LIBRARY" : "YOUR LIBRARY"}
+              </span>
+              <h2>{page === "Discover" ? "Applications" : "Installed Apps"}</h2>
             </div>
-            <span className="app-count">{filteredApps.length} APPLICATIONS</span>
+
+            <span className="app-count">
+              {page === "Discover"
+                ? `${visibleApps.length} APPLICATIONS`
+                : `${installedApps.length} SAVED`}
+            </span>
           </div>
 
-          <div className="categories">
-            {categories.map((item) => (
-              <button
-                key={item}
-                className={category === item ? "category active-category" : "category"}
-                onClick={() => setCategory(item)}
-              >
-                {item}
-              </button>
-            ))}
-          </div>
+          {page === "Discover" && (
+            <div className="categories">
+              {categories.map((item) => (
+                <button
+                  key={item}
+                  className={
+                    category === item
+                      ? "category active-category"
+                      : "category"
+                  }
+                  onClick={() => setCategory(item)}
+                >
+                  {item}
+                </button>
+              ))}
+            </div>
+          )}
 
           <div className="app-grid">
-            {filteredApps.map((app) => {
+            {visibleApps.map((app) => {
               const Icon = app.icon;
+              const isInstalled = installedApps.includes(app.name);
+
               return (
                 <article className="app-card" key={app.name}>
                   <div className="app-card-top">
-                    <div className="app-icon"><Icon size={25} /></div>
+                    <div className="app-icon">
+                      <Icon size={25} />
+                    </div>
                     <span className="app-category">{app.category}</span>
                   </div>
+
                   <h3>{app.name}</h3>
                   <p>{app.description}</p>
-                  <button className="install-button" disabled>
-                    <Download size={15} /> Coming soon
-                  </button>
+
+                  {page === "Discover" ? (
+                    <button
+                      className="install-button"
+                      onClick={() => addApp(app.name)}
+                      disabled={isInstalled}
+                    >
+                      {isInstalled ? (
+                        <>
+                          <CheckCircle2 size={15} /> Added
+                        </>
+                      ) : (
+                        <>
+                          <Download size={15} /> Add to library
+                        </>
+                      )}
+                    </button>
+                  ) : (
+                    <button
+                      className="install-button"
+                      onClick={() => removeApp(app.name)}
+                    >
+                      <Trash2 size={15} /> Remove
+                    </button>
+                  )}
                 </article>
               );
             })}
           </div>
 
-          {filteredApps.length === 0 && (
-            <div className="empty-state">No applications found. Try another search.</div>
+          {visibleApps.length === 0 && (
+            <div className="empty-state">
+              {page === "Installed" && installedApps.length === 0
+                ? "No applications added yet. Visit Discover to add some."
+                : "No applications found. Try another search."}
+            </div>
           )}
         </section>
 
-        <footer> XINETIC.OS 2.0 <span>BEYOND THE DESKTOP.</span> </footer>
+        <footer>
+          XINETIC.OS 2.0 <span>BEYOND THE DESKTOP.</span>
+        </footer>
       </main>
     </div>
   );
