@@ -1,4 +1,4 @@
-name: Build Xinetic Software Centre
+name: Deploy Xinetic Software Centre
 
 on:
   push:
@@ -6,9 +6,18 @@ on:
     paths:
       - "software-centre/**"
       - ".github/workflows/build-software-centre.yml"
-
   pull_request:
     branches: [main]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  pages: write
+  id-token: write
+
+concurrency:
+  group: "pages"
+  cancel-in-progress: true
 
 jobs:
   build:
@@ -33,3 +42,23 @@ jobs:
 
       - name: Build application
         run: npm run build
+
+      - name: Upload website
+        uses: actions/upload-pages-artifact@v3
+        with:
+          path: software-centre/dist
+
+  deploy:
+    name: Deploy to GitHub Pages
+    if: github.event_name == 'push'
+    needs: build
+    runs-on: ubuntu-latest
+
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+
+    steps:
+      - name: Deploy website
+        id: deployment
+        uses: actions/deploy-pages@v4
