@@ -6,32 +6,32 @@ shadeSortColumn=true
 [Colors:Window]
 BackgroundNormal=16,20,25
 BackgroundAlternate=25,31,38
-ForegroundNormal=225,232,238
-ForegroundInactive=145,155,165
-ForegroundActive=0,220,255
+ForegroundNormal=255,255,255
+ForegroundInactive=180,185,192
+ForegroundActive=255,255,255
 
 [Colors:Button]
-BackgroundNormal=30,38,46
-BackgroundAlternate=38,47,56
-ForegroundNormal=225,232,238
-ForegroundActive=0,220,255
+BackgroundNormal=35,40,47
+BackgroundAlternate=45,50,58
+ForegroundNormal=255,255,255
+ForegroundActive=255,255,255
 
 [Colors:Selection]
-BackgroundNormal=0,170,210
-BackgroundAlternate=0,140,180
-ForegroundNormal=255,255,255
-ForegroundInactive=225,232,238
+BackgroundNormal=190,198,208
+BackgroundAlternate=165,175,185
+ForegroundNormal=16,20,25
+ForegroundInactive=40,45,52
 
 [Colors:View]
 BackgroundNormal=19,24,30
 BackgroundAlternate=27,33,40
-ForegroundNormal=225,232,238
-ForegroundInactive=145,155,165
+ForegroundNormal=255,255,255
+ForegroundInactive=180,185,192
 
 [Colors:Tooltip]
-BackgroundNormal=25,31,38
-ForegroundNormal=225,232,238
+BackgroundNormal=35,40,47
+ForegroundNormal=255,255,255
 
 [Colors:Complementary]
 BackgroundNormal=16,20,25
-ForegroundNormal=225,232,238
+ForegroundNormal=255,255,255
